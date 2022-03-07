@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import csv
+
+f = open('subtractedCounts.csv', 'w+')
+writer = csv.writer(f)
 
 # === Settings ===
 sigfigs = 4
@@ -13,7 +17,8 @@ micronToAngstrom = (10**4)
 # # === He-Ne Wavelength Calculation ===
 backgroundCounts = [50,63,60,70,52,53,71,68,69,76,63,60,64,63,57,51,57,58,74,64,55,61,64,64,54,68,59,64,51,60]
 
-averageBackgroundCount = round(sum(backgroundCounts)/len(backgroundCounts),2)
+averageBackgroundCount = int(sum(backgroundCounts)/len(backgroundCounts))
+print("avg bgd count",averageBackgroundCount)
 
 totalCounts = [
                 [1064,945,866,717,682,632,511,533,429,405,373,343,298,274,230,218,187,201,178,147,130,143,133,121,97,108,89,84,104,99,107,80,79,81,80,66,77,83,65,84,82,70,66],
@@ -25,7 +30,8 @@ subtractedCounts = [[],[],[]]
 for t in range(len(totalCounts)):
     for c in range(len(totalCounts[t])):
         subtractedCounts[t].append(totalCounts[t][c]-averageBackgroundCount)
+    writer.writerow(subtractedCounts[t])
+    print("counts in trial",t+1,":",len(subtractedCounts[t]))
+    print(subtractedCounts[t])
 
-print("avg background count",averageBackgroundCount)
-for trial in subtractedCounts:
-    print("Trial:",trial)
+f.close()
